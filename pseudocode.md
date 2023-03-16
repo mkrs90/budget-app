@@ -2,8 +2,6 @@ class of Category:
     define __init__(self):
         self.name - like food, clothing, and entertainment
         self.ledger = []
-        self.amount = 0
-        self.description = ""
         self.total = 0
 
     define deposit(self accept amount and description):
