@@ -28,7 +28,19 @@ def test_create_category_with_type_setter():
     c.type = type_name
     assert c.type == type_name
 
-#
+#Category can have multiple category types
+#Category has ledger attribute
+#Category has deposit method
+#Deposit method accepts amount and description
+#Deposit method updates ledger
+#Deposit method updates category balance
+
+
+#Category has withdraw method
+#Category has get_balance method
+#Category has transfer method
+
+
 
 
 
