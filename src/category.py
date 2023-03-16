@@ -1,59 +1,63 @@
 class Category:
     def __init__(self, type):
         self.type = type
-        self.ledger = []
-        self.amount = 0
-        self.description = ""
+        self.ledger = {}
         self.total = 0
 
-    def deposit(self, pAmount, pdescription):
-        emptyStr = " "
-        # if description == null:
-        #     self.ledger.append({ "amount": pAmount, "description": emptyStr })
-        # else:
-        self.ledger.append({"amount": pAmount, "description": pdescription})
-        print(self.ledger)
+    def deposit(self, pAmount, pDescription="\t"):
+        self.ledger[pDescription] = pAmount 
+        self.total += pAmount
+        
 
-    def withdraw(self, nAmount, ndescription):
+    def withdraw(self, nAmount, nDescription="\t"):
+        #if number entered is positive switch to negative if negative continue
         if nAmount > self.total:
+            print("Not enough funds")
             return False
         else:
-            self.ledger.append({"amount": nAmount, "description": ndescription})
+            self.ledger[nDescription] = nAmount
+            self.total -= nAmount
             return True
 
     def get_balance(self):
-        getBalance = self.ledger.values()
-        balance = eval(getBalance)
-        return balance
+        return f'Your balance is ${self.total}'
 
-    def transfer(self, amount, type):
+    def transfer(self, amount, category_to):
         if amount < self.total:
-            transferTo = f'Transfer to {type}'
+            transferTo = f'Transfer to {category_to.type}'
             self.withdraw(amount, transferTo)
             transferFrom = f'Transfer from {self.type}'
-            self.deposit(amount, transferFrom)
+            category_to.deposit(amount, transferFrom)
             return True
         else:
             return False
 
-    def check_funds(self, amount, type):
-        if amount < type.total:
+    def check_funds(self, amount):
+        if amount <= self.total:
+            print('You have enough money in your account')
             return False
         else:
+            print(f'Warning, amount exceeds your balance of {self.total}')
             return True
 
-    def __str__(self):
-        # items = ""
-        # for key, value in self.ledger.items():
-        #     items = (key, ":  ", value)
-
-
-        return f'''
-        *************{self.type}*************
-        Total: {self.total}
-        '''
+    def __str__(self):       
+        outputStr = f"*************{self.type}*************\n"
+        for key, value in self.ledger.items():
+            outputStr += f'{key}\t\t{value}\n'
+        outputStr += f'Total: {self.total}\n'
+        return outputStr
 
 
 clothing = Category("Clothing")
-clothing.deposit(10, "new shoes")
-print(clothing.deposit(10, "new shoes"))
+clothing.deposit(10.00, "sold shoes")
+clothing.deposit(20.00)
+clothing.withdraw(15.00, "new shoes")
+clothing.check_funds(40.00)
+clothing.check_funds(5.00)
+
+food = Category("Food")
+food.deposit(20.00, "paycheck")
+food.withdraw(10.00, "groceries")
+clothing.transfer(5, food)
+print(clothing)
+print(food)
