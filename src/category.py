@@ -34,10 +34,10 @@ class Category:
     def check_funds(self, amount):
         if amount <= self.total:
             print('You have enough money in your account')
-            return False
+            return True
         else:
             print(f'Warning, amount exceeds your balance of {self.total}')
-            return True
+            return False
 
     def __str__(self):       
         outputStr = f"*************{self.type}*************\n"
@@ -59,6 +59,11 @@ food.deposit(20.00, "paycheck")
 food.withdraw(10.00, "groceries")
 clothing.transfer(5, food)
 
+entertainment = Category("Entertainment")
+entertainment.deposit(50.00, "paycheck")
+entertainment.withdraw(25.00, "movie tickets")
+entertainment.transfer(10, food)
 
 print(clothing)
 print(food)
+print(entertainment)
