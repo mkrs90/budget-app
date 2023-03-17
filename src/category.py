@@ -1,21 +1,20 @@
 class Category:
     def __init__(self, type):
         self.type = type
-        self.ledger = {}
+        self.ledger = []
         self.total = 0
 
-    def deposit(self, pAmount, pDescription="\t"):
-        self.ledger[pDescription] = pAmount 
+    def deposit(self, pAmount, pDescription=""):
+        self.ledger.append({"amount": pAmount, "description": pDescription}) 
         self.total += pAmount
         
 
-    def withdraw(self, nAmount, nDescription="\t"):
-        #if number entered is positive switch to negative if negative continue
+    def withdraw(self, nAmount, nDescription=""):
         if nAmount > self.total:
             print("Not enough funds")
             return False
         else:
-            self.ledger[nDescription] = nAmount
+            self.ledger.append({"amount": -1*nAmount, "description": nDescription}) 
             self.total -= nAmount
             return True
 
@@ -35,16 +34,16 @@ class Category:
     def check_funds(self, amount):
         if amount <= self.total:
             print('You have enough money in your account')
-            return False
+            return True
         else:
             print(f'Warning, amount exceeds your balance of {self.total}')
-            return True
+            return False
 
     def __str__(self):       
         outputStr = f"*************{self.type}*************\n"
-        for key, value in self.ledger.items():
-            outputStr += f'{key}\t\t{value}\n'
-        outputStr += f'Total: {self.total}\n'
+        for item in self.ledger:
+            outputStr += f'{item["description"]:30}${item["amount"]:8.2f}\n'
+        outputStr += f'Total: ${self.total:8.2f}\n'
         return outputStr
 
 
@@ -59,5 +58,12 @@ food = Category("Food")
 food.deposit(20.00, "paycheck")
 food.withdraw(10.00, "groceries")
 clothing.transfer(5, food)
+
+entertainment = Category("Entertainment")
+entertainment.deposit(50.00, "paycheck")
+entertainment.withdraw(25.00, "movie tickets")
+entertainment.transfer(10, food)
+
 print(clothing)
 print(food)
+print(entertainment)
